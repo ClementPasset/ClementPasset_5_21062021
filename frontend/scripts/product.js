@@ -32,6 +32,7 @@ const displayItem = (item, container) => {
     newImg = document.createElement('img');
     newImg.classList.add('product__img');
     newImg.setAttribute('src', item.imageUrl);
+    newImg.setAttribute('alt', 'Photo de ' + item.name);
     container.appendChild(newImg);
 
     newTitle = document.createElement('h2');
@@ -56,7 +57,7 @@ const displayItem = (item, container) => {
 
     newPrice = document.createElement('p');
     newPrice.classList.add('product__price');
-    newPrice.innerHTML = 'Acheter ce nounours au prix de ' + (item.price / 100).toFixed(2).replace('.', ',') + ' €';
+    newPrice.innerHTML = 'Acheter ce nounours au prix de <span class="product__priceText">' + (item.price / 100).toFixed(2).replace('.', ',') + '</span> €';
     container.appendChild(newPrice);
 
     newButton = document.createElement('button');

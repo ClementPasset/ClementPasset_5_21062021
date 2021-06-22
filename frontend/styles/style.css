@@ -181,6 +181,10 @@ body {
 .product__price {
   grid-area: price;
 }
+.product__priceText {
+  padding: 0;
+  text-decoration: underline;
+}
 .product__select {
   grid-area: select;
   width: 100%;

@@ -42,6 +42,11 @@
         grid-area: price;
     }
 
+    &__priceText{
+        padding: 0;
+        text-decoration: underline;
+    }
+
     &__select{
         grid-area: select;
         width: 100%;

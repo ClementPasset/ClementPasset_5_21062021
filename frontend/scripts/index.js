@@ -19,6 +19,7 @@ const displayItem = (item, container) => {
     newImg = document.createElement('img');
     newImg.classList.add('card__img');
     newImg.setAttribute('src', item.imageUrl);
+    newImg.setAttribute('alt', 'Photo de ' + item.name);
     newCard.appendChild(newImg);
 
     newTitle = document.createElement('h3');
