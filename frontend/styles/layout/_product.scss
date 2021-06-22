@@ -1,0 +1,49 @@
+.product{
+
+    display: grid;
+    grid-template-areas: 
+    'img title title'
+    'img description description'
+    'img select select'
+    'img price button';
+    grid-template-columns:2fr 1fr 1fr;
+    grid-template-rows: 100px 2fr 1fr 1fr;
+    place-items: center;
+
+    & *{
+        padding: 1rem;
+    }
+
+    &__img{
+        grid-area: img;
+        width: 100%;
+        height: 700px;
+        object-fit: cover;
+    }
+
+    &__title{
+        grid-area: title;
+        text-align: center;
+    }
+
+    &__description{
+        grid-area: description;
+    }
+
+    &__btn{
+        font-weight: bold;
+        grid-area: button;
+        & i.fas{
+            padding: 0 0 0 1rem;
+        }
+    }
+
+    &__price{
+        grid-area: price;
+    }
+
+    &__select{
+        grid-area: select;
+        width: 100%;
+    }
+}
