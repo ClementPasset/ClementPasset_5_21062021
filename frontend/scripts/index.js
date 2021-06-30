@@ -11,6 +11,18 @@ const getItems = () => {
     });
 };
 
+const updateNumberOfItems = () => {
+    let htmlNumber = document.querySelector('#items-in-cart');
+    let quantity = 0;
+    let cart = getCart();
+    if (Object.keys(cart).length !== 0) {
+        cart.forEach(elt => {
+            quantity += elt.quantity;
+        });
+    }
+    htmlNumber.innerHTML = quantity;
+};
+
 //Affiche une élément dans le container passé en paramètre
 const displayItem = (item, container) => {
     newCard = document.createElement('article');
@@ -44,7 +56,24 @@ const displayItem = (item, container) => {
     container.appendChild(newCard);
 };
 
+const getCart = () => {
+    let cart = JSON.parse(localStorage.getItem('cart'));
+    return cart === null ? [] : cart;
+}
 
+const errorMessage = () => {
+    errorTitle = document.createElement('h2');
+    errorTitle.innerHTML = 'Une erreur est survenue.';
+    errorTitle.classList.add('errorTitle');
+    errorText = document.createElement('p');
+    errorText.innerHTML = 'Il y a eu un problème de communication avec le serveur.<br>Merci de réessayer plus tard.';
+    errorText.classList.add('errorText');
+    main.appendChild(errorTitle);
+    main.appendChild(errorText);
+};
+
+
+updateNumberOfItems();
 getItems()
     .then(items => {
 
@@ -63,10 +92,5 @@ getItems()
         })
     })
     .catch((err) => {
-        errorTitle = document.createElement('h2');
-        errorTitle.innerHTML = 'Une erreur est survenue.';
-        errorText = document.createElement('p');
-        errorText.innerHTML = 'Il y a eu un problème de communication avec le serveur : <br>' + err;
-        main.appendChild(errorTitle);
-        main.appendChild(errorText);
+        errorMessage();
     })
