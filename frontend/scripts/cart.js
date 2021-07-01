@@ -1,5 +1,4 @@
 const main = document.querySelector('.main');
-let price = 0;
 
 const getCart = () => {
     let cart = JSON.parse(localStorage.getItem('cart'));
@@ -21,7 +20,22 @@ const getNumberOfItems = () => {
     return quantity;
 };
 
+const deleteFromCart = (item) => {
+    let { _id, color } = item;
+    let cart = getCart();
+    for (let i in cart) {
+        if (_id === cart[i]._id && color === cart[i].color) {
+            cart.splice(i, 1);
+        }
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    displayTable();
+    updateNumberOfItems();
+};
+
 let displayTable = () => {
+    let price = 0;
+    main.innerHTML = '';
     cart = getCart();
     let table = document.createElement('table');
     table.classList.add('cartTable');
@@ -45,7 +59,7 @@ let displayTable = () => {
             newCell.innerHTML = elt;
             newRow.appendChild(newCell);
         });
-
+        newRow.lastChild.addEventListener('click', (e) => deleteFromCart(item));
     });
 
     let lastRow = document.createElement('tr');
@@ -75,3 +89,7 @@ if (getNumberOfItems() === 0) {
 } else {
     displayTable();
 }
+
+document.querySelector('.header__title').parentElement.addEventListener('click', (e) => {
+    console.log(e.target);
+});
