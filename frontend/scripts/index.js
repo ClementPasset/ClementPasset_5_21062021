@@ -1,6 +1,11 @@
 const main = document.querySelector('.main');
 const address = "http://localhost:3000/api/teddies/";
 
+const deleteLoader = () => {
+    let loader = document.querySelector('.loader');
+    loader.remove();
+};
+
 //Récupère les éléments en appelant l'API et retourne une Promise
 const getItems = () => {
     return new Promise((resolve, reject) => {
@@ -89,8 +94,13 @@ getItems()
 
         items.forEach(item => {
             displayItem(item, container);
-        })
+        });
+        setTimeout(() => {
+            deleteLoader();
+        }, 500);
     })
     .catch((err) => {
         errorMessage();
+        deleteLoader();
     })
+
