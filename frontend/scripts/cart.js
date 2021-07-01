@@ -4,11 +4,13 @@ const getCart = () => {
     let cart = JSON.parse(localStorage.getItem('cart'));
     return cart === null ? [] : cart;
 }
+
 const updateNumberOfItems = () => {
     let htmlNumber = document.querySelector('#items-in-cart');
 
     htmlNumber.innerHTML = getNumberOfItems();
 };
+
 const getNumberOfItems = () => {
     let quantity = 0;
     let cart = getCart();
@@ -18,6 +20,11 @@ const getNumberOfItems = () => {
         });
     }
     return quantity;
+};
+
+const emptyCart = () => {
+    localStorage.removeItem('cart');
+    location.reload();
 };
 
 const deleteFromCart = (item) => {
@@ -43,12 +50,14 @@ let displayTable = () => {
     thead.classList.add('cartTable__head')
     main.appendChild(table);
     table.appendChild(thead);
-    let entetes = ['Nom', 'Couleur', 'Quantité', 'Prix unitaire', 'Total', ''];
+    let entetes = ['Nom', 'Couleur', 'Quantité', 'Prix unitaire', 'Total', '<i class="fas fa-trash"></i>'];
     entetes.forEach(col => {
         let newTh = document.createElement('th');
         newTh.innerHTML = col;
         thead.appendChild(newTh);
     });
+    thead.lastChild.classList.add('cartTable__emptyCart');
+    thead.lastChild.addEventListener('click', emptyCart);
     cart.forEach(item => {
         newRow = document.createElement('tr');
         newRow.classList.add('cartTable__row')

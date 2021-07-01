@@ -3,8 +3,19 @@
     border-collapse: collapse;
     text-align: center;
 
+    &__emptyCart{
+        cursor: pointer;
+        
+        &:hover{
+            background-color: rgb(138,0,0);
+        }
+    }
+
     &__head, &__footer{
+        font-weight: bold;
+        letter-spacing: 2px;
         background-color: #272727;
+        
         & th, & td{
             padding: .5rem;
         }
