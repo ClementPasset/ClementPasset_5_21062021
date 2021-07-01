@@ -13,5 +13,11 @@ ul{
 body{
     font-family: 'Montserrat', sans-serif;
     background-color: rgb(44,44,44);
-    color: #fff;
+    color: #d4d4d4;
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

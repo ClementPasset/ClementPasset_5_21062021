@@ -134,6 +134,7 @@ const addToCart = (item) => {
     let optionInput = document.querySelector('#productOption');
     let newItem = {
         _id: item._id,
+        name: item.name,
         color: productOption.value,
         quantity: parseInt(quantityInput.value),
         price: item.price
