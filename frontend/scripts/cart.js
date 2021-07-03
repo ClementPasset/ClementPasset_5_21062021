@@ -1,17 +1,22 @@
 const main = document.querySelector('.main');
-const addressAPI = 'http://localhost:3000/api/teddies/order';
+//const addressAPI = 'http://localhost:3000/api/teddies/order/';
+const addressAPI = "https://melch-so-pekocko.herokuapp.com/api/teddies/order/";
+let price;
 
+//Renvoi le contenu du panier
 const getCart = () => {
     let cart = JSON.parse(localStorage.getItem('cart'));
     return cart === null ? [] : cart;
 }
 
+//Met à jour le nombre d'articles du panier (dans la menu de navigation)
 const updateNumberOfItems = () => {
     let htmlNumber = document.querySelector('#items-in-cart');
 
     htmlNumber.innerHTML = getNumberOfItems();
 };
 
+//Retourne le nombre d'objets dans le panier
 const getNumberOfItems = () => {
     let quantity = 0;
     let cart = getCart();
@@ -23,11 +28,13 @@ const getNumberOfItems = () => {
     return quantity;
 };
 
+//Vide le panier
 const emptyCart = () => {
     localStorage.removeItem('cart');
     location.reload();
 };
 
+//Supprimer un objet du panier
 const deleteFromCart = (item) => {
     let { _id, color } = item;
     let cart = getCart();
@@ -42,7 +49,16 @@ const deleteFromCart = (item) => {
     updateNumberOfItems();
 };
 
-let formValidation = () => {
+//Validation du formulaire et envoi des données en POST
+let formValidation = (e) => {
+    e.preventDefault();
+    let cart = getCart();
+
+    let error = document.querySelector('.formError');
+    if (error !== null) {
+        error.remove();
+    }
+
     let errMsg = {};
 
     let contact = {
@@ -53,14 +69,32 @@ let formValidation = () => {
         email: document.querySelector('.contactForm__input[name="mail"]').value
     }
 
-    if (contact.firstName !== undefined) {
-        errMsg.firstName = "Votre prénom n'est pas renseigné";
+    if (contact.firstName === "") {
+        errMsg.firstName = "Votre prénom n'est pas renseigné.";
+    } else if (!/^[a-zA-Zà-ö]+(-?[a-zA-Zà-ö])*$/.test(contact.firstName)) {
+        errMsg.firstName = "Vérifiez votre prénom. Il ne doit pas contenir de chiffres ou de caractères spéciaux";
+    }
+    if (contact.lastName === "") {
+        errMsg.lastName = "Votre nom n'est pas renseigné.";
+    } else if (!/^[a-zA-Zà-ö]+(-?[a-zA-Zà-ö])*$/.test(contact.lastName)) {
+        errMsg.lastName = "Vérifiez votre nom. Il ne doit pas contenir de chiffres ou de caractères spéciaux";
+    }
+    if (contact.address === "") {
+        errMsg.address = "Votre adresse n'est pas renseignée.";
+    }
+    if (contact.city === "") {
+        errMsg.city = "Votre ville n'est pas renseignée.";
+    }
+    if (contact.email === "") {
+        errMsg.email = "Votre adresse email n'est pas renseignée.";
+    } else if (!/^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/.test(contact.email)) {
+        errMsg.email = "L'adresse mail renseignée n'est pas valide.";
     }
 
     if (Object.keys(errMsg).length === 0) {
         jsonBody = {
             contact,
-            products: ['5beaa8bf1c9d440000a57d94', '5be9c8541c9d440000665243']
+            products: cart.map(item => item._id)
         };
 
         fetch(addressAPI, {
@@ -73,28 +107,26 @@ let formValidation = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data.orderId);
-                //window.location.href = "./order.html";
+                data = {
+                    ...data,
+                    price: price
+                }
+                localStorage.setItem('order', JSON.stringify(data));
+                window.location.href = "./order.html";
             })
     } else {
-        for (msg in errMsg) { console.log(errMsg[msg]) }
+        let form = document.querySelector('.contactForm');
+
+        error = document.createElement('section');
+        error.classList.add('formError');
+        for (msg in errMsg) {
+            error.innerHTML += `<p class="formError__text">${errMsg[msg]}</p>`;
+        }
+        main.insertBefore(error, form);
     }
 };
 
-/**
- *
- * Expects request to contain:
- * contact: {
- *   firstName: string,
- *   lastName: string,
- *   address: string,
- *   city: string,
- *   email: string
- * }
- * products: [string] <-- array of product _id
- *
- */
-
+//Affichage du formulaire
 let displayForm = () => {
     let form = document.createElement('form');
     form.classList.add('contactForm');
@@ -173,17 +205,19 @@ let displayForm = () => {
     form.appendChild(mailLabel);
     form.appendChild(mailInput);
 
-    let button = document.createElement('input');
+    let button = document.createElement('button');
     button.setAttribute('type', 'submit');
+    button.innerHTML = 'Valider la commande'
     button.classList.add('contactForm__button');
     button.addEventListener('click', e => {
-        formValidation();
+        formValidation(e);
     });
     form.appendChild(button);
 };
 
+//Affihage du récapitulatif du panier
 let displayTable = () => {
-    let price = 0;
+    price = 0;
     main.innerHTML = '';
     cart = getCart();
     let table = document.createElement('table');

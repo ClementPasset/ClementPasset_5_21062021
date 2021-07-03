@@ -1,5 +1,6 @@
 const main = document.querySelector('.main');
-const address = "http://localhost:3000/api/teddies/";
+//const address = "http://localhost:3000/api/teddies/";
+const address = "https://melch-so-pekocko.herokuapp.com/api/teddies/";
 const searchParams = new URL(document.URL).searchParams;
 let price;
 let cart;
@@ -115,6 +116,7 @@ const displayItem = (item, container) => {
     })
 };
 
+//Met à jour le nombre d'articles du panier (dans la menu de navigation)
 const updateNumberOfItems = () => {
     let htmlNumber = document.querySelector('#items-in-cart');
     let quantity = 0;

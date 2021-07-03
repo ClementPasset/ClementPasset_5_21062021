@@ -1,6 +1,8 @@
 const main = document.querySelector('.main');
-const address = "http://localhost:3000/api/teddies/";
+//const address = "http://localhost:3000/api/teddies/";
+const address = "https://melch-so-pekocko.herokuapp.com/api/teddies/";
 
+//Supprime le loader sur la page index
 const deleteLoader = () => {
     let loader = document.querySelector('.loader');
     loader.remove();
@@ -16,6 +18,7 @@ const getItems = () => {
     });
 };
 
+//Met à jour le nombre d'articles du panier (dans la menu de navigation)
 const updateNumberOfItems = () => {
     let htmlNumber = document.querySelector('#items-in-cart');
     let quantity = 0;
@@ -61,11 +64,13 @@ const displayItem = (item, container) => {
     container.appendChild(newCard);
 };
 
+//Renvoi le contenu du panier
 const getCart = () => {
     let cart = JSON.parse(localStorage.getItem('cart'));
     return cart === null ? [] : cart;
 }
 
+//Affichage d'un message d'erreur sur la page
 const errorMessage = () => {
     errorTitle = document.createElement('h2');
     errorTitle.innerHTML = 'Une erreur est survenue.';
@@ -99,7 +104,7 @@ getItems()
             deleteLoader();
         }, 500);
     })
-    .catch((err) => {
+    .catch(err => {
         errorMessage();
         deleteLoader();
     })
