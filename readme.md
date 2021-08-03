@@ -7,7 +7,7 @@ Merci de suivre les instructions ci-dessous pour lancer le projet.
 
 ## Instructions
 
-1. Clôner le projet : git clone https://github.com/ClementPasset/orinoco.git
+1. Clôner le projet : git clone https://github.com/ClementPasset/ClementPasset_5_21062021.git
 2. Se rendre dans le dossier backend du projet : cd ./orinoco/backend
 3. Installer les dépendances pour le backend : npm install
 4. Lancer le serveur backend : npm start
