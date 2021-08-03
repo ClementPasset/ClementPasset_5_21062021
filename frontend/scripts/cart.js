@@ -1,5 +1,5 @@
 const main = document.querySelector('.main');
-const addressAPI = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+const addressAPI = (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || '')
     ? 'http://localhost:3000/api/teddies/order'
     : 'https://melch-so-pekocko.herokuapp.com/api/teddies/order';
 let price;
