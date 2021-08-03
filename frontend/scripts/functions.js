@@ -405,7 +405,7 @@ const addToCart = (item) => {
     let newItem = {
         _id: item._id,
         name: item.name,
-        color: productOption.value,
+        color: optionInput.value,
         quantity: parseInt(quantityInput.value),
         price: item.price
     }
