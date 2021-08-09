@@ -5,7 +5,6 @@ const addressAPI = (location.hostname === 'localhost' || location.hostname === '
 let price;
 
 updateNumberOfItems();
-
 if (getNumberOfItems() === 0) {
     errorTitle = document.createElement('h2');
     errorTitle.innerHTML = 'Votre panier est vide';

@@ -37,6 +37,16 @@ const deleteFromCart = (item) => {
     updateNumberOfItems();
 };
 
+const validateInput = (text, inputName, regex = null) => {
+    if (text === '') {
+        return `Le champ '${inputName}' est vide.`;
+    }
+    if (regex !== null && !regex.test(text)) {
+        return `Le champ '${inputName}' n'est pas valide`;
+    }
+    return null;
+}
+
 /**
  * Valide les données du formulaire et envoie la requête POST
  * 
@@ -61,27 +71,17 @@ let formValidation = (e) => {
         email: document.querySelector('.contactForm__input[name="mail"]').value
     }
 
-    if (contact.firstName === "") {
-        errMsg.firstName = "Votre prénom n'est pas renseigné.";
-    } else if (!/^[a-zA-Zà-ö]+(-?[a-zA-Zà-ö])*$/.test(contact.firstName)) {
-        errMsg.firstName = "Vérifiez votre prénom. Il ne doit pas contenir de chiffres ou de caractères spéciaux";
-    }
-    if (contact.lastName === "") {
-        errMsg.lastName = "Votre nom n'est pas renseigné.";
-    } else if (!/^[a-zA-Zà-ö]+(-?[a-zA-Zà-ö])*$/.test(contact.lastName)) {
-        errMsg.lastName = "Vérifiez votre nom. Il ne doit pas contenir de chiffres ou de caractères spéciaux";
-    }
-    if (contact.address === "") {
-        errMsg.address = "Votre adresse n'est pas renseignée.";
-    }
-    if (contact.city === "") {
-        errMsg.city = "Votre ville n'est pas renseignée.";
-    }
-    if (contact.email === "") {
-        errMsg.email = "Votre adresse email n'est pas renseignée.";
-    } else if (!/^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/.test(contact.email)) {
-        errMsg.email = "L'adresse mail renseignée n'est pas valide.";
-    }
+    errMsg.firstName = validateInput(contact.firstName, 'prénom', /^[a-zA-Zà-ö]+(-?[a-zA-Zà-ö])*$/);
+    errMsg.lastName = validateInput(contact.lastName, 'nom', /^[a-zA-Zà-ö]+(-?[a-zA-Zà-ö])*$/);
+    errMsg.address = validateInput(contact.address, 'addresse');
+    errMsg.city = validateInput(contact.city, 'ville');
+    errMsg.email = validateInput(contact.email, 'email', /^([\w-\.]+)@((?:[\w]+\.)+)([a-zA-Z]{2,4})/);
+
+    Object.keys(errMsg).forEach((key) => {
+        if (errMsg[key] === null) {
+            delete errMsg[key];
+        }
+    });
 
     if (Object.keys(errMsg).length === 0) {
         jsonBody = {
